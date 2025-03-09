@@ -105,9 +105,12 @@ const pullModelMutation = useMutation({
 });
 
 const dialogVisible = ref(false);
+const closeDialog = () => {
+  dialogVisible.value = false;
+};
 const pullModel = (name: string) => {
   pullModelMutation.mutate(name);
-  dialogVisible.value = false;
+  closeDialog();
 };
 </script>
 
@@ -138,7 +141,7 @@ const pullModel = (name: string) => {
       </div>
     </div>
 
-    <PullModelDialog :visible="dialogVisible" @create="pullModel" @cancel="dialogVisible = false" />
+    <PullModelDialog :visible="dialogVisible" @create="pullModel" @cancel="closeDialog" />
   </div>
 </template>
 
