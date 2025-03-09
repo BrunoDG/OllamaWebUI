@@ -77,7 +77,9 @@ const createNewConversation = () => {
 const scrollToBottom = () => {
   if (chatAreaRef.value) {
     setTimeout(() => {
-      chatAreaRef.value.scrollTop = chatAreaRef.value.scrollHeight;
+      if (chatAreaRef.value) {
+        chatAreaRef.value.scrollTop = chatAreaRef.value.scrollHeight;
+      }
     }, 50);
   }
 };

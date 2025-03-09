@@ -4,7 +4,7 @@ Bolter é uma interface web moderna e elegante para o Ollama, permitindo interag
 
 ## Características
 
-- Interface de usuário moderna com tema escuro/claro
+- Interface de usuário moderna com tema escuro
 - Suporte a markdown nas mensagens
 - Histórico de conversas
 - Seleção de modelos
@@ -19,29 +19,46 @@ Bolter é uma interface web moderna e elegante para o Ollama, permitindo interag
 
    ```bash
    git clone https://github.com/brunodg/OllamaWebUI.git
-   cd bolter
+   cd OllamaWebUI
    ```
 
-2. Execute o Docker Compose:
+2. Construa a imagem Docker localmente:
+
+   ```bash
+   docker build -t bolter-ui:latest .
+   ```
+
+3. Execute o Docker Compose:
 
    ```bash
    docker-compose up -d
    ```
 
-3. Acesse a interface web em `http://seu-servidor:8080`
+4. Acesse a interface web em `http://seu-servidor:8080`
 
 ### Método 2: Usando a interface do CasaOS
 
-1. Acesse o painel do CasaOS
-2. Vá para "Aplicativos" > "Instalar"
-3. Clique em "Personalizado"
-4. Cole o seguinte conteúdo:
+Para usar a interface do CasaOS, você precisa primeiro construir a imagem Docker localmente no servidor CasaOS:
+
+1. Transfira os arquivos do projeto para o servidor CasaOS (usando SCP, SFTP, Git, etc.)
+2. Conecte-se via SSH ao servidor CasaOS
+3. Navegue até a pasta do projeto
+4. Construa a imagem localmente:
+
+   ```bash
+   docker build -t bolter-ui:latest .
+   ```
+
+5. Acesse o painel do CasaOS
+6. Vá para "Aplicativos" > "Instalar"
+7. Clique em "Personalizado"
+8. Cole o seguinte conteúdo:
 
 ```yaml
 version: '3'
 services:
   bolter-ui:
-    image: seu-usuario/bolter-ui:latest
+    image: bolter-ui:latest
     container_name: bolter-ui
     ports:
       - '8080:80'
@@ -73,8 +90,40 @@ volumes:
     driver: local
 ```
 
-5. Clique em "Instalar"
-6. Acesse a interface web em `http://seu-servidor:8080`
+9. Clique em "Instalar"
+10. Acesse a interface web em `http://seu-servidor:8080`
+
+### Método 3: Publicando a imagem no Docker Hub (opcional)
+
+Se você quiser disponibilizar sua imagem para outros usuários ou para facilitar a instalação em múltiplos servidores:
+
+1. Crie uma conta no Docker Hub (<https://hub.docker.com/>)
+2. Faça login no Docker Hub localmente:
+
+   ```bash
+   docker login
+   ```
+
+3. Construa a imagem com seu nome de usuário:
+
+   ```bash
+   docker build -t seunomeusuario/bolter-ui:latest .
+   ```
+
+4. Envie a imagem para o Docker Hub:
+
+   ```bash
+   docker push seunomeusuario/bolter-ui:latest
+   ```
+
+5. Modifique o docker-compose.yml para usar sua imagem publicada:
+
+   ```yaml
+   services:
+     bolter-ui:
+       image: seunomeusuario/bolter-ui:latest
+       # resto do arquivo...
+   ```
 
 ## Configuração
 
@@ -83,7 +132,7 @@ volumes:
 Se você deseja conectar o Bolter a uma instância do Ollama em outro servidor:
 
 1. Acesse a aba "Conexão" na barra lateral
-2. Digite o URL do servidor Ollama (ex: `http://192.168.1.100:11434`)
+2. Digite o URL do servidor Ollama (ex: `http://192.168.1.8:11434`)
 3. Clique em "Testar Conexão" e depois em "Salvar"
 
 ### Personalização do tema
@@ -110,12 +159,6 @@ npm run dev
 
 # Compilar para produção
 npm run build
-```
-
-## Construção da imagem Docker
-
-```bash
-docker build -t seu-usuario/bolter-ui:latest .
 ```
 
 ## Licença

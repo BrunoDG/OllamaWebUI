@@ -5,6 +5,22 @@ import { useModelStore } from '@/stores/model';
 import { config } from '@/config';
 import PullModelDialog from './PullModelDialog.vue';
 
+// Interface para o modelo
+interface OllamaModel {
+  name: string;
+  model: string;
+  modified_at: string;
+  size: number;
+  digest: string;
+  details: {
+    format: string;
+    family: string;
+    families: string[];
+    parameter_size: string;
+    quantization_level: string;
+  };
+}
+
 const modelStore = useModelStore();
 const { currentModel } = toRefs(modelStore);
 
@@ -18,7 +34,9 @@ const getModels = async () => {
     const data = await response.json();
 
     if (data.models && data.models.length > 0) {
-      const mostRecentModel = data.models.reduce((a, b) => (a.modified_at > b.modified_at ? a : b));
+      const mostRecentModel = data.models.reduce((a: OllamaModel, b: OllamaModel) =>
+        (a.modified_at > b.modified_at ? a : b)
+      );
       modelStore.setCurrentModel(mostRecentModel.name);
     }
 

@@ -34,15 +34,27 @@ const props = defineProps<Props>();
 
 // Configurar o marked para usar highlight.js
 onMounted(() => {
-  marked.setOptions({
-    highlight: function (code, lang) {
-      const language = hljs.getLanguage(lang) ? lang : 'plaintext';
-      return hljs.highlight(code, { language }).value;
-    },
+  // Definir as opções do marked
+  const markedOptions: marked.MarkedOptions = {
     langPrefix: 'hljs language-',
     gfm: true,
     breaks: true
-  });
+  };
+
+  // Adicionar a função de highlight separadamente para evitar o erro de tipagem
+  const renderer = new marked.Renderer();
+
+  renderer.code = function (code, language) {
+    const lang = language || 'plaintext';
+    const highlightedCode = hljs.getLanguage(lang)
+      ? hljs.highlight(code, { language: lang }).value
+      : hljs.highlightAuto(code).value;
+
+    return `<pre><code class="hljs language-${lang}">${highlightedCode}</code></pre>`;
+  };
+
+  markedOptions.renderer = renderer;
+  marked.setOptions(markedOptions);
 });
 
 // Renderizar o conteúdo markdown
