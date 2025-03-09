@@ -18,7 +18,7 @@ Bolter é uma interface web moderna e elegante para o Ollama, permitindo interag
 1. Faça o download do repositório:
 
    ```bash
-   git clone https://github.com/seu-usuario/bolter.git
+   git clone https://github.com/brunodg/OllamaWebUI.git
    cd bolter
    ```
 
