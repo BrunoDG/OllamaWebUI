@@ -1,15 +1,14 @@
 <template>
   <div class="pull-model-dialog">
-    <Dialog v-model:visible="visible" modal header="Load a new model" :style="{ width: '25rem' }">
-      <span class="p-text-secondary block mb-5">Enter the model name you want to add</span>
+    <Dialog v-model:visible="visible" modal header="Carregar novo modelo" :style="{ width: '25rem' }">
+      <span class="block mb-5 text-white">Digite o nome do modelo que você deseja adicionar</span>
       <div class="flex items-center gap-3 mb-5">
-        <label for="breakout-name" class="font-semibold w-[6rem]">Model name</label>
-        <InputText id="breakout-name" v-model="name" class="flex-auto" autocomplete="off" />
-
+        <label for="model-name" class="font-semibold w-[6rem] text-white">Nome do modelo</label>
+        <InputText id="model-name" v-model="name" class="flex-auto" autocomplete="off" />
       </div>
       <div class="flex justify-content-end gap-2">
-        <Button label="Cancel" severity="secondary" class="p-button-text" @click="emit('cancel')" />
-        <Button label="Load" class="p-button-success" @click="emit('create', name)" />
+        <Button label="Cancelar" severity="secondary" class="p-button-text text-white" @click="emit('cancel')" />
+        <Button label="Carregar" class="p-button-success" @click="emit('create', name)" />
       </div>
     </Dialog>
   </div>

@@ -3,9 +3,16 @@
     <div :class="contentClass">
       <div class="flex items-center mb-2">
         <Avatar :class="avatarClass">
-          <i :class="avatarIconClass" class="font-bold"></i>
+          <template v-if="props.message.role === 'user'">
+            <i class="pi pi-user font-bold"></i>
+          </template>
+          <template v-else>
+            <img src="../assets/logo.png" alt="Bevel Drive Logo" class="w-full h-full object-cover" />
+          </template>
         </Avatar>
-        <span class="ml-2 font-semibold">{{ props.message.role === 'user' ? 'Você' : 'Bolter' }}</span>
+        <span :class="['ml-2 font-bold', props.message.role === 'agent' ? 'text-primary' : '']">
+          {{ props.message.role === 'user' ? 'Você' : 'Bolter' }}
+        </span>
       </div>
       <div v-html="renderedContent"></div>
     </div>
@@ -58,15 +65,11 @@ const contentClass = computed(() => {
 const avatarClass = computed(() => {
   return props.message.role === 'user' ? 'w-[2rem] h-[2rem]' : 'w-[2rem] h-[2rem]';
 });
-
-const avatarIconClass = computed(() => {
-  return props.message.role === 'user' ? 'pi pi-user' : 'pi pi-desktop';
-});
 </script>
 
 <style scoped>
 .markdown-content :deep(pre) {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.3);
   border-radius: 0.5rem;
   padding: 1rem;
   overflow-x: auto;
@@ -75,7 +78,7 @@ const avatarIconClass = computed(() => {
 
 .markdown-content :deep(code) {
   font-family: monospace;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.3);
   padding: 0.2rem 0.4rem;
   border-radius: 0.25rem;
 }

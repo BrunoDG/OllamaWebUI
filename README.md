@@ -1,39 +1,123 @@
-# OllamaWebUI
+# Bolter - Interface Web para Ollama
 
-This template should help get you started developing with Vue 3 in Vite.
+Bolter é uma interface web moderna e elegante para o Ollama, permitindo interagir com modelos de linguagem de forma fácil e intuitiva.
 
-## Recommended IDE Setup
+## Características
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- Interface de usuário moderna com tema escuro/claro
+- Suporte a markdown nas mensagens
+- Histórico de conversas
+- Seleção de modelos
+- Barra lateral colapsável
+- Configuração de conexão com Ollama remoto
 
-## Type Support for `.vue` Imports in TS
+## Instalação no CasaOS
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+### Método 1: Usando o Docker Compose
 
-## Customize configuration
+1. Faça o download do repositório:
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+   ```bash
+   git clone https://github.com/seu-usuario/bolter.git
+   cd bolter
+   ```
 
-## Project Setup
+2. Execute o Docker Compose:
 
-```sh
+   ```bash
+   docker-compose up -d
+   ```
+
+3. Acesse a interface web em `http://seu-servidor:8080`
+
+### Método 2: Usando a interface do CasaOS
+
+1. Acesse o painel do CasaOS
+2. Vá para "Aplicativos" > "Instalar"
+3. Clique em "Personalizado"
+4. Cole o seguinte conteúdo:
+
+```yaml
+version: '3'
+services:
+  bolter-ui:
+    image: seu-usuario/bolter-ui:latest
+    container_name: bolter-ui
+    ports:
+      - '8080:80'
+    environment:
+      - OLLAMA_API_URL=http://ollama:11434
+    networks:
+      - ollama-network
+    restart: unless-stopped
+    depends_on:
+      - ollama
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    volumes:
+      - ollama-data:/root/.ollama
+    ports:
+      - '11434:11434'
+    networks:
+      - ollama-network
+    restart: unless-stopped
+
+networks:
+  ollama-network:
+    driver: bridge
+
+volumes:
+  ollama-data:
+    driver: local
+```
+
+5. Clique em "Instalar"
+6. Acesse a interface web em `http://seu-servidor:8080`
+
+## Configuração
+
+### Conexão com Ollama em outro servidor
+
+Se você deseja conectar o Bolter a uma instância do Ollama em outro servidor:
+
+1. Acesse a aba "Conexão" na barra lateral
+2. Digite o URL do servidor Ollama (ex: `http://192.168.1.100:11434`)
+3. Clique em "Testar Conexão" e depois em "Salvar"
+
+### Personalização do tema
+
+1. Acesse a aba "Tema" na barra lateral
+2. Escolha uma cor predefinida ou digite um código de cor hexadecimal
+3. Clique em "Aplicar Tema"
+
+## Desenvolvimento
+
+### Requisitos
+
+- Node.js 18+
+- npm ou yarn
+
+### Instalação para desenvolvimento
+
+```bash
+# Instalar dependências
 npm install
-```
 
-### Compile and Hot-Reload for Development
-
-```sh
+# Iniciar servidor de desenvolvimento
 npm run dev
-```
 
-### Type-Check, Compile and Minify for Production
-
-```sh
+# Compilar para produção
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+## Construção da imagem Docker
 
-```sh
-npm run lint
+```bash
+docker build -t seu-usuario/bolter-ui:latest .
 ```
+
+## Licença
+
+MIT
