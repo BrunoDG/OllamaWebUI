@@ -1,28 +1,27 @@
 <template>
   <div class="conversation-history flex flex-col h-full">
-    <div class="flex justify-between items-center p-4 border-b border-gray-700">
+    <div class="flex justify-between items-center p-4 border-b border-color">
       <h2 class="text-lg font-bold">Histórico de Conversas</h2>
-      <Button icon="pi pi-plus" rounded text class="text-white" aria-label="Nova Conversa"
-        @click="createNewConversation" />
+      <Button icon="pi pi-plus" rounded text aria-label="Nova Conversa" @click="createNewConversation" />
     </div>
 
     <div class="overflow-y-auto flex-grow">
-      <div v-if="conversations.length === 0" class="p-4 text-center text-gray-400">
+      <div v-if="conversations.length === 0" class="p-4 text-center text-secondary">
         Nenhuma conversa encontrada. Inicie uma nova conversa!
       </div>
 
-      <div v-for="conversation in conversations" :key="conversation.id" :class="['conversation-item p-3 border-b border-gray-700 cursor-pointer hover:bg-gray-800',
-        { 'bg-gray-800': conversation.id === currentConversationId }]" @click="switchToConversation(conversation.id)">
+      <div v-for="conversation in conversations" :key="conversation.id" :class="['conversation-item p-3 border-b border-color cursor-pointer hover:bg-hover',
+        { 'bg-selected': conversation.id === currentConversationId }]" @click="switchToConversation(conversation.id)">
         <div class="flex justify-between items-center">
           <div class="flex-grow truncate pr-2">
             <div class="font-medium">{{ conversation.title }}</div>
-            <div class="text-xs text-gray-400">
+            <div class="text-xs text-secondary">
               {{ formatDate(conversation.updatedAt) }} • {{ conversation.model }}
             </div>
           </div>
           <div class="flex">
-            <Button icon="pi pi-pencil" text rounded size="small" class="text-white"
-              @click.stop="startRenaming(conversation)" aria-label="Renomear" />
+            <Button icon="pi pi-pencil" text rounded size="small" @click.stop="startRenaming(conversation)"
+              aria-label="Renomear" />
             <Button icon="pi pi-trash" text rounded severity="danger" size="small"
               @click.stop="confirmDelete(conversation.id)" aria-label="Excluir" />
           </div>
@@ -150,6 +149,39 @@ const emit = defineEmits<{
 </script>
 
 <style scoped>
+.conversation-history {
+  background-color: var(--sidebar-bg-color);
+  color: var(--text-color);
+}
+
+.conversation-item {
+  transition: background-color 0.3s;
+}
+
+.conversation-item:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.conversation-item.active {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.border-color {
+  border-color: var(--border-color);
+}
+
+.text-secondary {
+  color: var(--text-secondary-color, #888888);
+}
+
+.bg-hover {
+  background-color: var(--hover-bg-color, rgba(0, 0, 0, 0.1));
+}
+
+.bg-selected {
+  background-color: var(--selected-bg-color, rgba(0, 0, 0, 0.2));
+}
+
 .conversation-item:hover .actions {
   opacity: 1;
 }

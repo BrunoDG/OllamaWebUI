@@ -38,29 +38,29 @@ onMounted(() => {
         <ChatBox />
       </div>
       <div
-        :class="['border-l border-gray-700 h-full bg-sidebar transition-all duration-300 ease-in-out relative', isSidebarCollapsed ? 'w-[50px]' : 'w-1/4']">
+        :class="['border-l border-color h-full bg-sidebar transition-all duration-300 ease-in-out relative', isSidebarCollapsed ? 'w-[50px]' : 'w-1/4']">
 
         <!-- Botão para colapsar/expandir a barra lateral (sempre visível) -->
-        <button class="absolute z-10 top-50 left-0 -translate-x-1/2 text-white hover:text-primary transition-colors"
+        <button class="absolute z-10 top-50 left-0 -translate-x-1/2 text-color hover:text-primary transition-colors"
           @click="toggleSidebar" :title="isSidebarCollapsed ? 'Expandir' : 'Colapsar'">
           <i :class="['pi text-2xl', isSidebarCollapsed ? 'pi-chevron-left' : 'pi-chevron-right']"></i>
         </button>
 
         <template v-if="!isSidebarCollapsed">
           <!-- Abas da barra lateral -->
-          <div class="flex border-b border-gray-700 bg-header">
+          <div class="flex border-b border-color bg-header">
             <button class="flex-1 py-2 text-center font-medium transition-colors text-xs"
-              :class="sidebarTab === 'main' ? 'border-b-2 border-primary text-primary' : 'text-gray-300 hover:text-white'"
+              :class="sidebarTab === 'main' ? 'border-b-2 border-primary text-primary' : 'text-secondary hover:text-color'"
               @click="sidebarTab = 'main'">
               Principal
             </button>
             <button class="flex-1 py-2 text-center font-medium transition-colors text-xs"
-              :class="sidebarTab === 'config' ? 'border-b-2 border-primary text-primary' : 'text-gray-300 hover:text-white'"
+              :class="sidebarTab === 'config' ? 'border-b-2 border-primary text-primary' : 'text-secondary hover:text-color'"
               @click="sidebarTab = 'config'">
               Conexão
             </button>
             <button class="flex-1 py-2 text-center font-medium transition-colors text-xs"
-              :class="sidebarTab === 'theme' ? 'border-b-2 border-primary text-primary' : 'text-gray-300 hover:text-white'"
+              :class="sidebarTab === 'theme' ? 'border-b-2 border-primary text-primary' : 'text-secondary hover:text-color'"
               @click="sidebarTab = 'theme'">
               Tema
             </button>
@@ -77,17 +77,17 @@ onMounted(() => {
           <!-- Ícones da barra lateral colapsada -->
           <div class="flex flex-col items-center py-4 space-y-6">
             <button class="w-8 h-8 flex items-center justify-center rounded-full transition-colors"
-              :class="sidebarTab === 'main' ? 'bg-primary text-white' : 'text-gray-300 hover:text-white'"
+              :class="sidebarTab === 'main' ? 'bg-primary text-white' : 'text-secondary hover:text-color'"
               @click="sidebarTab = 'main'; isSidebarCollapsed = false;" title="Principal">
               <i class="pi pi-comments"></i>
             </button>
             <button class="w-8 h-8 flex items-center justify-center rounded-full transition-colors"
-              :class="sidebarTab === 'config' ? 'bg-primary text-white' : 'text-gray-300 hover:text-white'"
+              :class="sidebarTab === 'config' ? 'bg-primary text-white' : 'text-secondary hover:text-color'"
               @click="sidebarTab = 'config'; isSidebarCollapsed = false;" title="Conexão">
               <i class="pi pi-server"></i>
             </button>
             <button class="w-8 h-8 flex items-center justify-center rounded-full transition-colors"
-              :class="sidebarTab === 'theme' ? 'bg-primary text-white' : 'text-gray-300 hover:text-white'"
+              :class="sidebarTab === 'theme' ? 'bg-primary text-white' : 'text-secondary hover:text-color'"
               @click="sidebarTab = 'theme'; isSidebarCollapsed = false;" title="Tema">
               <i class="pi pi-palette"></i>
             </button>
@@ -102,6 +102,8 @@ onMounted(() => {
 main {
   height: 100vh;
   overflow: hidden;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 .bg-sidebar {
@@ -114,6 +116,18 @@ main {
 
 .bg-chat {
   background-color: var(--chat-bg-color);
+}
+
+.border-color {
+  border-color: var(--border-color);
+}
+
+.text-secondary {
+  color: var(--text-secondary-color, #888888);
+}
+
+.text-color {
+  color: var(--text-color);
 }
 
 /* Botão semicircular */

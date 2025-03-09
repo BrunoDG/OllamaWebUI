@@ -59,7 +59,7 @@ const messageClass = computed(() => {
 const contentClass = computed(() => {
   return props.message.role === 'user'
     ? 'p-4 bg-primary text-white rounded-3xl rounded-bl-none shadow-md max-w-[80%] markdown-content'
-    : 'p-4 bg-secondary text-white rounded-3xl rounded-br-none shadow-md max-w-[80%] markdown-content';
+    : 'p-4 bg-message-agent rounded-3xl rounded-br-none shadow-md max-w-[80%] markdown-content';
 });
 
 const avatarClass = computed(() => {
@@ -125,5 +125,10 @@ const avatarClass = computed(() => {
 .markdown-content :deep(a) {
   color: #4dabf7;
   text-decoration: underline;
+}
+
+.bg-message-agent {
+  background-color: var(--message-agent-bg);
+  color: var(--message-text-color);
 }
 </style>

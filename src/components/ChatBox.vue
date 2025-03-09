@@ -32,11 +32,11 @@
           <i class="pi pi-send text-xl"></i>
         </Button>
       </div>
-      <div class="text-xs text-gray-400 px-[10px] -mt-2 flex items-center">
-        <i class="pi pi-info-circle mr-1 text-white"></i>
+      <div class="text-xs text-secondary px-[10px] -mt-2 flex items-center">
+        <i class="pi pi-info-circle mr-1"></i>
         <span>Dica: Você pode usar **negrito**, *itálico*, `código`, ```blocos de código```, [links](url) e muito
           mais!</span>
-        <Button icon="pi pi-question" text class="p-0 ml-1 text-white"
+        <Button icon="pi pi-question" text class="p-0 ml-1"
           v-tooltip.top="'Markdown suportado: **negrito**, *itálico**, `código`, ```blocos de código```, # Títulos, > Citações, - Listas, [links](url), etc.'"></Button>
       </div>
     </div>
@@ -173,5 +173,20 @@ const submitChat = async () => {
 <style scoped>
 #chat-area {
   scroll-behavior: smooth;
+  background-color: var(--chat-bg-color);
+  color: var(--text-color);
+}
+
+#chat-box {
+  background-color: var(--chat-bg-color);
+  color: var(--text-color);
+}
+
+#chat-container {
+  background-color: var(--chat-bg-color);
+}
+
+.text-secondary {
+  color: var(--text-secondary-color, #888888);
 }
 </style>
