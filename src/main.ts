@@ -11,6 +11,7 @@ import Button from 'primevue/button'
 import Textarea from 'primevue/textarea'
 import Avatar from 'primevue/avatar'
 import Dropdown from 'primevue/dropdown'
+import Select from 'primevue/select'
 import ProgressBar from 'primevue/progressbar'
 import Dialog from 'primevue/dialog'
 import InputText from 'primevue/inputtext'
@@ -37,6 +38,7 @@ app.component('Button', Button)
 app.component('Textarea', Textarea)
 app.component('Avatar', Avatar)
 app.component('Dropdown', Dropdown)
+app.component('Select', Select)
 app.component('ProgressBar', ProgressBar)
 app.component('Dialog', Dialog)
 app.component('InputText', InputText)

@@ -16,6 +16,8 @@
     "@primeuix/themes": "^1.0.0",
     "@tailwindcss/vite": "^4.0.12",
     "@tanstack/vue-query": "^5.67.2",
+    "highlight.js": "^11.11.1",
+    "marked": "^15.0.7",
     "ollama": "^0.5.14",
     "pinia": "^3.0.1",
     "primeflex": "^4.0.0",

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, toRefs } from 'vue';
-import ollama, { type ListResponse } from 'ollama';
+import ollama from 'ollama';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/vue-query';
 import { useModelStore } from '@/stores/model';
 import PullModelDialog from './PullModelDialog.vue';
@@ -43,7 +43,7 @@ const pullModelWithProgress = async (model: string) => {
 const queryClient = useQueryClient();
 const pullModelMutation = useMutation({
   mutationFn: pullModelWithProgress,
-  onSuccess(data, variables, context) {
+  onSuccess() {
     queryClient.invalidateQueries({ queryKey: ['models'] });
   }
 });
@@ -56,22 +56,22 @@ const pullModel = (name: string) => {
 </script>
 
 <template>
-  <div id="modelSelectorContainer">
-    <div id="modelSelector" class="flex flex-column h-10rem">
+  <div class="flex w-full">
+    <div class="w-full m-4 flex flex-col h-40">
       <span class="text-lg font-bold">Model</span>
-      <div v-if="isPending">
-        <Dropdown placeholder="Loading Models..." loading class="w-full md:w-14rem"></Dropdown>
+      <div v-if="isPending" class="w-full">
+        <Select placeholder="Carregando Modelos..." :loading="true" class="w-full md:w-56"></Select>
       </div>
-      <div v-else-if="isError">An error has occurred: {{ error }}</div>
+      <div v-else-if="isError" class="text-red-500">Ocorreu um erro: {{ error }}</div>
       <div v-else-if="data" class="flex">
-        <Dropdown v-model="currentModel" :options="data.models" optionLabel="name" optionValue="model"
-          placeholder="Select a Model" class="w-full md:w-14rem" />
-        <Button icon="pi pi-plus" aria-label="Add Model" class="ml-2" @click="dialogVisible = true" />
+        <Select v-model="currentModel" :options="data.models" optionLabel="name" optionValue="model"
+          placeholder="Selecione um Modelo" class="w-full md:w-56" />
+        <Button icon="pi pi-plus" aria-label="Adicionar Modelo" class="ml-2" @click="dialogVisible = true" />
       </div>
-      <div id="progressArea" class="flex flex-column mt-2 w-full" v-if="loadingModelName">
-        <span class="font-semibold">Loading model: {{ loadingModelName }}</span>
+      <div class="flex flex-col mt-2 w-full" v-if="loadingModelName">
+        <span class="font-semibold">Carregando modelo: {{ loadingModelName }}</span>
         <span>{{ progressStatus }}</span>
-        <span style="font-family: monospace">{{ progressCompleted }}/{{ progressTotal }}</span>
+        <span class="font-mono">{{ progressCompleted }}/{{ progressTotal }}</span>
         <ProgressBar :value="progressPercent"></ProgressBar>
       </div>
     </div>
