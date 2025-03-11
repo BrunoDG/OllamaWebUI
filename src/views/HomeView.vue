@@ -2,11 +2,10 @@
 import ChatBox from '../components/ChatBox.vue'
 import SidebarContent from '../components/SidebarContent.vue'
 import OllamaConfig from '../components/OllamaConfig.vue'
-import ThemeConfig from '../components/ThemeConfig.vue'
 import { ref, onMounted } from 'vue'
 
 // Estado para controlar qual componente está visível na barra lateral
-const sidebarTab = ref('main'); // 'main' ou 'config' ou 'theme'
+const sidebarTab = ref('main'); // 'main' ou 'config'
 
 // Estado para controlar se a barra lateral está colapsada
 const isSidebarCollapsed = ref(false);
@@ -59,18 +58,12 @@ onMounted(() => {
               @click="sidebarTab = 'config'">
               Conexão
             </button>
-            <button class="flex-1 py-2 text-center font-medium transition-colors text-xs"
-              :class="sidebarTab === 'theme' ? 'border-b-2 border-primary text-primary' : 'text-secondary hover:text-color'"
-              @click="sidebarTab = 'theme'">
-              Tema
-            </button>
           </div>
 
           <!-- Conteúdo da barra lateral -->
           <div class="h-[calc(100%-40px)]">
             <SidebarContent v-if="sidebarTab === 'main'" @conversation-changed="handleConversationChanged" />
             <OllamaConfig v-else-if="sidebarTab === 'config'" />
-            <ThemeConfig v-else-if="sidebarTab === 'theme'" />
           </div>
         </template>
         <template v-else>
@@ -85,11 +78,6 @@ onMounted(() => {
               :class="sidebarTab === 'config' ? 'bg-primary text-white' : 'text-secondary hover:text-color'"
               @click="sidebarTab = 'config'; isSidebarCollapsed = false;" title="Conexão">
               <i class="pi pi-server"></i>
-            </button>
-            <button class="w-8 h-8 flex items-center justify-center rounded-full transition-colors"
-              :class="sidebarTab === 'theme' ? 'bg-primary text-white' : 'text-secondary hover:text-color'"
-              @click="sidebarTab = 'theme'; isSidebarCollapsed = false;" title="Tema">
-              <i class="pi pi-palette"></i>
             </button>
           </div>
         </template>

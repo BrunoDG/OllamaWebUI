@@ -50,9 +50,6 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1.5;
-  transition:
-    background-color 0.3s,
-    color 0.3s;
 }
 
 #app {
@@ -158,7 +155,6 @@ a,
 /* Estilos específicos para o chat */
 #chat-box {
   background-color: var(--chat-bg-color);
-  transition: background-color 0.3s;
 }
 
 #chat-area {
@@ -170,10 +166,6 @@ a,
   background-color: var(--input-bg-color) !important;
   color: var(--input-text-color) !important;
   border-color: var(--input-border-color) !important;
-  transition:
-    background-color 0.3s,
-    color 0.3s,
-    border-color 0.3s;
 }
 
 .p-inputtext:focus {
@@ -185,10 +177,6 @@ a,
   background-color: var(--dropdown-bg-color) !important;
   color: var(--dropdown-text-color) !important;
   border-color: var(--dropdown-border-color) !important;
-  transition:
-    background-color 0.3s,
-    color 0.3s,
-    border-color 0.3s;
 }
 
 .p-dropdown-panel,
@@ -213,10 +201,6 @@ a,
   background-color: #2d2d2d !important;
   color: #ffffff !important;
   border-color: #444444 !important;
-  transition:
-    background-color 0.3s,
-    color 0.3s,
-    border-color 0.3s;
 }
 
 .p-dialog .p-dialog-header {
@@ -248,8 +232,4 @@ a,
 ::-webkit-scrollbar-thumb {
   background: #444444;
   border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555555;
 }

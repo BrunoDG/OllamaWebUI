@@ -23,29 +23,6 @@ const initTheme = () => {
     },
   )
   document.documentElement.style.setProperty('--primary-color-darker', darkerColor)
-
-  // Definir cores para tema escuro
-  document.documentElement.style.setProperty('--text-color', '#ffffff')
-  document.documentElement.style.setProperty('--background-color', '#121212')
-  document.documentElement.style.setProperty('--chat-bg-color', '#1e1e1e')
-  document.documentElement.style.setProperty('--sidebar-bg-color', '#1e1e1e')
-  document.documentElement.style.setProperty('--message-agent-bg', '#2d2d2d')
-  document.documentElement.style.setProperty('--header-bg-color', '#2d2d2d')
-  document.documentElement.style.setProperty('--border-color', '#333333')
-  document.documentElement.style.setProperty('--message-text-color', '#ffffff')
-  document.documentElement.style.setProperty('--text-secondary-color', '#aaaaaa')
-  document.documentElement.style.setProperty('--hover-bg-color', 'rgba(255, 255, 255, 0.1)')
-  document.documentElement.style.setProperty('--selected-bg-color', 'rgba(255, 255, 255, 0.15)')
-  document.documentElement.style.setProperty('--button-text-color', '#ffffff')
-
-  // Estilos para inputs e dropdowns
-  document.documentElement.style.setProperty('--input-bg-color', '#2d2d2d')
-  document.documentElement.style.setProperty('--input-text-color', '#ffffff')
-  document.documentElement.style.setProperty('--input-border-color', '#444444')
-  document.documentElement.style.setProperty('--dropdown-bg-color', '#2d2d2d')
-  document.documentElement.style.setProperty('--dropdown-text-color', '#ffffff')
-  document.documentElement.style.setProperty('--dropdown-border-color', '#444444')
-  document.documentElement.style.setProperty('--dropdown-item-hover-bg', '#3d3d3d')
 }
 
 initTheme()

@@ -46,7 +46,6 @@ const conversation = computed(() => {
   color: var(--text-color);
   padding: 1rem;
   border-bottom: 1px solid var(--border-color, #333333);
-  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
 
 .logo {
