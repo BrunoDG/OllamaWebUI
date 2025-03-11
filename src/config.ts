@@ -5,25 +5,18 @@ interface Config {
 }
 
 // Interface para a janela global com a propriedade OLLAMA_API_URL
-interface WindowWithOllamaConfig extends Window {
+interface CustomWindow extends Window {
   OLLAMA_API_URL?: string
 }
 
 // Obter a URL da API do arquivo de configuração global
-const getApiUrl = (): string => {
-  // Em ambiente de desenvolvimento, usar o proxy do Vite
+function getApiUrl(): string {
+  // Em desenvolvimento, use o proxy do Vite
   if (import.meta.env.DEV) {
     return '/api'
   }
-
-  // Em produção, usar a URL configurada ou o padrão
-  if (typeof window !== 'undefined') {
-    const customWindow = window as WindowWithOllamaConfig
-    if (customWindow.OLLAMA_API_URL) {
-      return customWindow.OLLAMA_API_URL
-    }
-  }
-  return 'http://localhost:11434'
+  // Em produção, use a URL configurada ou o padrão
+  return (window as CustomWindow).OLLAMA_API_URL || 'http://localhost:11434'
 }
 
 // Configuração padrão
@@ -31,26 +24,20 @@ const defaultConfig: Config = {
   ollamaBaseUrl: getApiUrl(),
 }
 
-// Carregar configuração do localStorage ou usar a padrão
+// Carregar configuração do localStorage
 const loadConfig = (): Config => {
-  const savedConfig = localStorage.getItem('app_config')
+  const savedConfig = localStorage.getItem('config')
   if (savedConfig) {
-    try {
-      return { ...defaultConfig, ...JSON.parse(savedConfig) }
-    } catch (e) {
-      console.error('Erro ao carregar configuração:', e)
-    }
+    return JSON.parse(savedConfig)
   }
   return defaultConfig
 }
 
 // Salvar configuração no localStorage
-export const saveConfig = (config: Partial<Config>): Config => {
-  const currentConfig = loadConfig()
-  const newConfig = { ...currentConfig, ...config }
-  localStorage.setItem('app_config', JSON.stringify(newConfig))
-  return newConfig
+const saveConfig = (config: Config) => {
+  localStorage.setItem('config', JSON.stringify(config))
 }
 
 // Exportar a configuração atual
 export const config = loadConfig()
+export { saveConfig }

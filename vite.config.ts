@@ -23,23 +23,24 @@ export default defineConfig({
     },
   },
   server: {
-    cors: true,
     host: true,
+    cors: true,
     proxy: {
-      // Proxy para o Ollama API
       '/api': {
-        target: 'http://192.168.1.8:11434',
+        target: 'http://localhost:11434',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
-        configure: (proxy) => {
-          proxy.on('error', (err) => {
-            console.log('Erro de proxy:', err)
+        configure: (proxy, options) => {
+          proxy.on('error', (err, req, res) => {
+            console.log('Proxy error:', err)
           })
-          proxy.on('proxyReq', (_proxyReq, req) => {
-            console.log('Enviando requisição para:', req.url)
+          proxy.on('proxyReq', (proxyReq, req, res) => {
+            console.log('Proxy request:', req.method, req.url)
           })
-          proxy.on('proxyRes', (proxyRes, req) => {
-            console.log('Recebendo resposta de:', req.url, 'Status:', proxyRes.statusCode)
+          proxy.on('proxyRes', (proxyRes, req, res) => {
+            res.setHeader('Access-Control-Allow-Origin', '*')
+            res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+            res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
           })
         },
       },
