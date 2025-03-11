@@ -188,6 +188,13 @@ const submitChat = async () => {
   background-color: var(--chat-bg-color);
 }
 
+/* Estilo específico para o Textarea */
+:deep(.p-inputtextarea) {
+  background-color: var(--input-bg-color) !important;
+  color: var(--input-text-color) !important;
+  border-color: var(--input-border-color) !important;
+}
+
 .text-secondary {
   color: var(--text-secondary-color, #888888);
 }

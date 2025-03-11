@@ -6,21 +6,7 @@ import './assets/base.css'
 import { config } from './config'
 console.log(`Configuração carregada: Ollama URL = ${config.ollamaBaseUrl}`)
 
-// Gerenciamento de tema
-export const isDarkTheme = ref(localStorage.getItem('theme') !== 'light')
-
-export function toggleTheme() {
-  isDarkTheme.value = !isDarkTheme.value
-  if (isDarkTheme.value) {
-    document.documentElement.classList.remove('light-theme')
-    localStorage.setItem('theme', 'dark')
-  } else {
-    document.documentElement.classList.add('light-theme')
-    localStorage.setItem('theme', 'light')
-  }
-}
-
-// Inicializar o tema
+// Inicializar o tema (apenas tema escuro)
 const initTheme = () => {
   const savedColor = localStorage.getItem('theme_color') || '#9d0505'
   document.documentElement.style.setProperty('--primary-color', savedColor)
@@ -38,42 +24,46 @@ const initTheme = () => {
   )
   document.documentElement.style.setProperty('--primary-color-darker', darkerColor)
 
-  // Definir cores secundárias
-  document.documentElement.style.setProperty('--secondary-color', '#333333')
+  // Definir cores para tema escuro
+  document.documentElement.style.setProperty('--text-color', '#ffffff')
+  document.documentElement.style.setProperty('--background-color', '#121212')
   document.documentElement.style.setProperty('--chat-bg-color', '#1e1e1e')
   document.documentElement.style.setProperty('--sidebar-bg-color', '#1e1e1e')
-  document.documentElement.style.setProperty('--header-bg-color', '#2d2d2d')
   document.documentElement.style.setProperty('--message-agent-bg', '#2d2d2d')
+  document.documentElement.style.setProperty('--header-bg-color', '#2d2d2d')
   document.documentElement.style.setProperty('--border-color', '#333333')
+  document.documentElement.style.setProperty('--message-text-color', '#ffffff')
+  document.documentElement.style.setProperty('--text-secondary-color', '#aaaaaa')
+  document.documentElement.style.setProperty('--hover-bg-color', 'rgba(255, 255, 255, 0.1)')
+  document.documentElement.style.setProperty('--selected-bg-color', 'rgba(255, 255, 255, 0.15)')
   document.documentElement.style.setProperty('--button-text-color', '#ffffff')
 
-  // Aplicar tema salvo
-  const savedTheme = localStorage.getItem('theme')
-  if (savedTheme === 'light') {
-    document.documentElement.classList.add('light-theme')
-  }
+  // Estilos para inputs e dropdowns
+  document.documentElement.style.setProperty('--input-bg-color', '#2d2d2d')
+  document.documentElement.style.setProperty('--input-text-color', '#ffffff')
+  document.documentElement.style.setProperty('--input-border-color', '#444444')
+  document.documentElement.style.setProperty('--dropdown-bg-color', '#2d2d2d')
+  document.documentElement.style.setProperty('--dropdown-text-color', '#ffffff')
+  document.documentElement.style.setProperty('--dropdown-border-color', '#444444')
+  document.documentElement.style.setProperty('--dropdown-item-hover-bg', '#3d3d3d')
 }
 
 initTheme()
 
-import { createApp, ref } from 'vue'
+import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { VueQueryPlugin } from '@tanstack/vue-query'
 
 import PrimeVue from 'primevue/config'
 import Button from 'primevue/button'
+import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
-import Avatar from 'primevue/avatar'
+import Dialog from 'primevue/dialog'
 import Dropdown from 'primevue/dropdown'
 import Select from 'primevue/select'
 import ProgressBar from 'primevue/progressbar'
-import Dialog from 'primevue/dialog'
-import InputText from 'primevue/inputtext'
+import Avatar from 'primevue/avatar'
 import Tooltip from 'primevue/tooltip'
-import Aura from '@primeuix/themes/aura'
-
-import 'primeflex/primeflex.css'
-import 'primeicons/primeicons.css'
 
 import App from './App.vue'
 import router from './router'
@@ -82,22 +72,17 @@ const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
+app.use(PrimeVue)
 app.use(VueQueryPlugin)
-app.use(PrimeVue, {
-  theme: {
-    preset: Aura,
-  },
-})
 
 app.component('Button', Button)
+app.component('InputText', InputText)
 app.component('Textarea', Textarea)
-app.component('Avatar', Avatar)
+app.component('Dialog', Dialog)
 app.component('Dropdown', Dropdown)
 app.component('Select', Select)
 app.component('ProgressBar', ProgressBar)
-app.component('Dialog', Dialog)
-app.component('InputText', InputText)
-
+app.component('Avatar', Avatar)
 app.directive('tooltip', Tooltip)
 
 app.mount('#app')

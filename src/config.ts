@@ -11,6 +11,12 @@ interface WindowWithOllamaConfig extends Window {
 
 // Obter a URL da API do arquivo de configuração global
 const getApiUrl = (): string => {
+  // Em ambiente de desenvolvimento, usar o proxy do Vite
+  if (import.meta.env.DEV) {
+    return '/api'
+  }
+
+  // Em produção, usar a URL configurada ou o padrão
   if (typeof window !== 'undefined') {
     const customWindow = window as WindowWithOllamaConfig
     if (customWindow.OLLAMA_API_URL) {

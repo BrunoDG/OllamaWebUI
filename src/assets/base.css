@@ -17,6 +17,18 @@
   --header-bg-color: #2d2d2d;
   --border-color: #333333;
   --button-text-color: #ffffff;
+  --text-secondary-color: #aaaaaa;
+  --hover-bg-color: rgba(255, 255, 255, 0.1);
+  --selected-bg-color: rgba(255, 255, 255, 0.15);
+
+  /* Variáveis para inputs e dropdowns */
+  --input-bg-color: #2d2d2d;
+  --input-text-color: #ffffff;
+  --input-border-color: #444444;
+  --dropdown-bg-color: #2d2d2d;
+  --dropdown-text-color: #ffffff;
+  --dropdown-border-color: #444444;
+  --dropdown-item-hover-bg: #3d3d3d;
 }
 
 /* Estilos globais */
@@ -155,9 +167,9 @@ a,
 
 /* Estilos para inputs e textareas */
 .p-inputtext {
-  background-color: #2d2d2d !important;
-  color: #ffffff !important;
-  border-color: #444444 !important;
+  background-color: var(--input-bg-color) !important;
+  color: var(--input-text-color) !important;
+  border-color: var(--input-border-color) !important;
   transition:
     background-color 0.3s,
     color 0.3s,
@@ -170,9 +182,9 @@ a,
 
 .p-dropdown,
 .p-select {
-  background-color: #2d2d2d !important;
-  color: #ffffff !important;
-  border-color: #444444 !important;
+  background-color: var(--dropdown-bg-color) !important;
+  color: var(--dropdown-text-color) !important;
+  border-color: var(--dropdown-border-color) !important;
   transition:
     background-color 0.3s,
     color 0.3s,
@@ -181,19 +193,19 @@ a,
 
 .p-dropdown-panel,
 .p-select-panel {
-  background-color: #2d2d2d !important;
-  color: #ffffff !important;
-  border-color: #444444 !important;
+  background-color: var(--dropdown-bg-color) !important;
+  color: var(--dropdown-text-color) !important;
+  border-color: var(--dropdown-border-color) !important;
 }
 
 .p-dropdown-item,
 .p-select-item {
-  color: #ffffff !important;
+  color: var(--dropdown-text-color) !important;
 }
 
 .p-dropdown-item:hover,
 .p-select-item:hover {
-  background-color: #3d3d3d !important;
+  background-color: var(--dropdown-item-hover-bg) !important;
 }
 
 /* Estilos para diálogos */
