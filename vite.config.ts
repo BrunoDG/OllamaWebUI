@@ -23,11 +23,7 @@ export default defineConfig({
     },
   },
   server: {
-    cors: {
-      origin: 'http://192.168.1.10:5173',
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization'],
-      preflightContinue: true,
-    },
+    cors: true,
+    host: true,
   },
 })
