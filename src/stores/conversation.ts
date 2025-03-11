@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { Message } from 'ollama'
+import { config } from '@/config'
 
 interface Conversation {
   id: string
@@ -24,13 +25,64 @@ export const useConversationStore = defineStore('conversation', () => {
   const conversations = ref<Conversation[]>([])
   const currentConversationId = ref<string | null>(null)
 
+  // Limpar tags think do conteúdo
+  const cleanThinkTags = (content: string): string => {
+    return content.replace(/<think>[\s\S]*?<\/think>/g, '').trim()
+  }
+
+  // Gerar título usando o modelo
+  const generateTitle = async (conversation: Conversation) => {
+    try {
+      // Limpar as tags think das mensagens
+      const cleanMessages = conversation.messages.map((m) => ({
+        ...m,
+        content: cleanThinkTags(m.content),
+      }))
+
+      const prompt = `Com base na conversa a seguir, gere um título curto e descritivo (máximo 50 caracteres):
+
+${cleanMessages.map((m) => `${m.role}: ${m.content}`).join('\n')}
+
+Responda APENAS com o título, sem explicações adicionais.`
+
+      const response = await fetch(`${config.ollamaBaseUrl}/api/generate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: conversation.model,
+          prompt,
+          stream: false,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Erro ao gerar título')
+      }
+
+      const data = await response.json()
+      // Limpar tags think da resposta e remover quebras de linha
+      const newTitle = cleanThinkTags(data.response).replace(/\n/g, ' ').trim()
+
+      // Atualizar o título da conversa
+      conversation.title = newTitle
+      saveToLocalStorage()
+
+      return newTitle
+    } catch (error) {
+      console.error('Erro ao gerar título:', error)
+      return null
+    }
+  }
+
   // Criar uma nova conversa
   const createConversation = (model: string, initialMessage?: Message) => {
     const id = Date.now().toString()
     const now = new Date()
     const newConversation: Conversation = {
       id,
-      title: `Conversa ${conversations.value.length + 1}`,
+      title: `Nova Conversa`,
       messages: initialMessage ? [initialMessage] : [],
       model,
       createdAt: now,
@@ -50,19 +102,15 @@ export const useConversationStore = defineStore('conversation', () => {
   }
 
   // Adicionar mensagem à conversa atual
-  const addMessageToCurrentConversation = (message: Message) => {
+  const addMessageToCurrentConversation = async (message: Message) => {
     const conversation = getCurrentConversation()
     if (conversation) {
       conversation.messages.push(message)
       conversation.updatedAt = new Date()
 
-      // Atualizar o título baseado na primeira mensagem do usuário
-      if (
-        message.role === 'user' &&
-        conversation.title === `Conversa ${conversations.value.length}`
-      ) {
-        const content = message.content.substring(0, 30)
-        conversation.title = content + (content.length >= 30 ? '...' : '')
+      // Se for a primeira mensagem do usuário, gerar título
+      if (message.role === 'user' && conversation.messages.length <= 2) {
+        generateTitle(conversation)
       }
 
       saveToLocalStorage()
@@ -85,7 +133,6 @@ export const useConversationStore = defineStore('conversation', () => {
     if (index !== -1) {
       conversations.value.splice(index, 1)
 
-      // Se a conversa atual foi excluída, mude para outra ou crie uma nova
       if (currentConversationId.value === id) {
         if (conversations.value.length > 0) {
           currentConversationId.value = conversations.value[0].id
