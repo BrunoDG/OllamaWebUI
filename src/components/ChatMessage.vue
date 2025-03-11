@@ -34,27 +34,15 @@ const props = defineProps<Props>();
 
 // Configurar o marked para usar highlight.js
 onMounted(() => {
-  // Definir as opções do marked
-  const markedOptions: marked.MarkedOptions = {
+  marked.setOptions({
+    highlight: function (code, lang) {
+      const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+      return hljs.highlight(code, { language }).value;
+    },
     langPrefix: 'hljs language-',
     gfm: true,
     breaks: true
-  };
-
-  // Adicionar a função de highlight separadamente para evitar o erro de tipagem
-  const renderer = new marked.Renderer();
-
-  renderer.code = function (code, language) {
-    const lang = language || 'plaintext';
-    const highlightedCode = hljs.getLanguage(lang)
-      ? hljs.highlight(code, { language: lang }).value
-      : hljs.highlightAuto(code).value;
-
-    return `<pre><code class="hljs language-${lang}">${highlightedCode}</code></pre>`;
-  };
-
-  markedOptions.renderer = renderer;
-  marked.setOptions(markedOptions);
+  });
 });
 
 // Renderizar o conteúdo markdown
@@ -71,7 +59,7 @@ const messageClass = computed(() => {
 const contentClass = computed(() => {
   return props.message.role === 'user'
     ? 'p-4 bg-primary text-white rounded-3xl rounded-bl-none shadow-md max-w-[80%] markdown-content'
-    : 'p-4 bg-message-agent rounded-3xl rounded-br-none shadow-md max-w-[80%] markdown-content';
+    : 'p-4 bg-secondary text-white rounded-3xl rounded-br-none shadow-md max-w-[80%] markdown-content';
 });
 
 const avatarClass = computed(() => {
@@ -137,10 +125,5 @@ const avatarClass = computed(() => {
 .markdown-content :deep(a) {
   color: #4dabf7;
   text-decoration: underline;
-}
-
-.bg-message-agent {
-  background-color: var(--message-agent-bg);
-  color: var(--message-text-color);
 }
 </style>

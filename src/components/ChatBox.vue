@@ -32,11 +32,11 @@
           <i class="pi pi-send text-xl"></i>
         </Button>
       </div>
-      <div class="text-xs text-secondary px-[10px] -mt-2 flex items-center">
-        <i class="pi pi-info-circle mr-1"></i>
+      <div class="text-xs text-gray-400 px-[10px] -mt-2 flex items-center">
+        <i class="pi pi-info-circle mr-1 text-white"></i>
         <span>Dica: Você pode usar **negrito**, *itálico*, `código`, ```blocos de código```, [links](url) e muito
           mais!</span>
-        <Button icon="pi pi-question" text class="p-0 ml-1"
+        <Button icon="pi pi-question" text class="p-0 ml-1 text-white"
           v-tooltip.top="'Markdown suportado: **negrito**, *itálico**, `código`, ```blocos de código```, # Títulos, > Citações, - Listas, [links](url), etc.'"></Button>
       </div>
     </div>
@@ -77,9 +77,7 @@ const createNewConversation = () => {
 const scrollToBottom = () => {
   if (chatAreaRef.value) {
     setTimeout(() => {
-      if (chatAreaRef.value) {
-        chatAreaRef.value.scrollTop = chatAreaRef.value.scrollHeight;
-      }
+      chatAreaRef.value.scrollTop = chatAreaRef.value.scrollHeight;
     }, 50);
   }
 };
@@ -175,27 +173,5 @@ const submitChat = async () => {
 <style scoped>
 #chat-area {
   scroll-behavior: smooth;
-  background-color: var(--chat-bg-color);
-  color: var(--text-color);
-}
-
-#chat-box {
-  background-color: var(--chat-bg-color);
-  color: var(--text-color);
-}
-
-#chat-container {
-  background-color: var(--chat-bg-color);
-}
-
-/* Estilo específico para o Textarea */
-:deep(.p-inputtextarea) {
-  background-color: var(--input-bg-color) !important;
-  color: var(--input-text-color) !important;
-  border-color: var(--input-border-color) !important;
-}
-
-.text-secondary {
-  color: var(--text-secondary-color, #888888);
 }
 </style>

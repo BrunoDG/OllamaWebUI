@@ -6,7 +6,21 @@ import './assets/base.css'
 import { config } from './config'
 console.log(`Configuração carregada: Ollama URL = ${config.ollamaBaseUrl}`)
 
-// Inicializar o tema (apenas tema escuro)
+// Gerenciamento de tema
+export const isDarkTheme = ref(localStorage.getItem('theme') !== 'light')
+
+export function toggleTheme() {
+  isDarkTheme.value = !isDarkTheme.value
+  if (isDarkTheme.value) {
+    document.documentElement.classList.remove('light-theme')
+    localStorage.setItem('theme', 'dark')
+  } else {
+    document.documentElement.classList.add('light-theme')
+    localStorage.setItem('theme', 'light')
+  }
+}
+
+// Inicializar o tema
 const initTheme = () => {
   const savedColor = localStorage.getItem('theme_color') || '#9d0505'
   document.documentElement.style.setProperty('--primary-color', savedColor)
@@ -23,24 +37,43 @@ const initTheme = () => {
     },
   )
   document.documentElement.style.setProperty('--primary-color-darker', darkerColor)
+
+  // Definir cores secundárias
+  document.documentElement.style.setProperty('--secondary-color', '#333333')
+  document.documentElement.style.setProperty('--chat-bg-color', '#1e1e1e')
+  document.documentElement.style.setProperty('--sidebar-bg-color', '#1e1e1e')
+  document.documentElement.style.setProperty('--header-bg-color', '#2d2d2d')
+  document.documentElement.style.setProperty('--message-agent-bg', '#2d2d2d')
+  document.documentElement.style.setProperty('--border-color', '#333333')
+  document.documentElement.style.setProperty('--button-text-color', '#ffffff')
+
+  // Aplicar tema salvo
+  const savedTheme = localStorage.getItem('theme')
+  if (savedTheme === 'light') {
+    document.documentElement.classList.add('light-theme')
+  }
 }
 
 initTheme()
 
-import { createApp } from 'vue'
+import { createApp, ref } from 'vue'
 import { createPinia } from 'pinia'
 import { VueQueryPlugin } from '@tanstack/vue-query'
 
 import PrimeVue from 'primevue/config'
 import Button from 'primevue/button'
-import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
-import Dialog from 'primevue/dialog'
+import Avatar from 'primevue/avatar'
 import Dropdown from 'primevue/dropdown'
 import Select from 'primevue/select'
 import ProgressBar from 'primevue/progressbar'
-import Avatar from 'primevue/avatar'
+import Dialog from 'primevue/dialog'
+import InputText from 'primevue/inputtext'
 import Tooltip from 'primevue/tooltip'
+import Aura from '@primeuix/themes/aura'
+
+import 'primeflex/primeflex.css'
+import 'primeicons/primeicons.css'
 
 import App from './App.vue'
 import router from './router'
@@ -49,17 +82,22 @@ const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
-app.use(PrimeVue)
 app.use(VueQueryPlugin)
+app.use(PrimeVue, {
+  theme: {
+    preset: Aura,
+  },
+})
 
 app.component('Button', Button)
-app.component('InputText', InputText)
 app.component('Textarea', Textarea)
-app.component('Dialog', Dialog)
+app.component('Avatar', Avatar)
 app.component('Dropdown', Dropdown)
 app.component('Select', Select)
 app.component('ProgressBar', ProgressBar)
-app.component('Avatar', Avatar)
+app.component('Dialog', Dialog)
+app.component('InputText', InputText)
+
 app.directive('tooltip', Tooltip)
 
 app.mount('#app')
