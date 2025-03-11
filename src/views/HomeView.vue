@@ -40,7 +40,8 @@ onMounted(() => {
         :class="['border-l border-color h-full bg-sidebar transition-all duration-300 ease-in-out relative', isSidebarCollapsed ? 'w-[50px]' : 'w-1/4']">
 
         <!-- Botão para colapsar/expandir a barra lateral (sempre visível) -->
-        <button class="absolute z-10 top-50 left-0 -translate-x-1/2 text-color hover:text-primary transition-colors"
+        <button
+          class="absolute z-10 top-50 left-0 -translate-x-1/2 text-color hover:text-primary transition-colors bg-header rounded-xl w-[30px] h-[50px]"
           @click="toggleSidebar" :title="isSidebarCollapsed ? 'Expandir' : 'Colapsar'">
           <i :class="['pi text-2xl', isSidebarCollapsed ? 'pi-chevron-left' : 'pi-chevron-right']"></i>
         </button>

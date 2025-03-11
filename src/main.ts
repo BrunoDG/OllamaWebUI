@@ -6,20 +6,6 @@ import './assets/base.css'
 import { config } from './config'
 console.log(`Configuração carregada: Ollama URL = ${config.ollamaBaseUrl}`)
 
-// Gerenciamento de tema
-export const isDarkTheme = ref(localStorage.getItem('theme') !== 'light')
-
-export function toggleTheme() {
-  isDarkTheme.value = !isDarkTheme.value
-  if (isDarkTheme.value) {
-    document.documentElement.classList.remove('light-theme')
-    localStorage.setItem('theme', 'dark')
-  } else {
-    document.documentElement.classList.add('light-theme')
-    localStorage.setItem('theme', 'light')
-  }
-}
-
 // Inicializar o tema
 const initTheme = () => {
   const savedColor = localStorage.getItem('theme_color') || '#9d0505'

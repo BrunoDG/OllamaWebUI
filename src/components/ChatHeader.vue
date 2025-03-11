@@ -12,10 +12,6 @@
         <div v-if="conversation" class="text-sm font-medium mr-4">
           {{ conversation.title }}
         </div>
-        <Button icon="pi pi-sun" v-if="isDarkTheme" rounded text class="text-white" aria-label="Mudar para tema claro"
-          @click="toggleTheme" v-tooltip.bottom="'Mudar para tema claro'" />
-        <Button icon="pi pi-moon" v-else rounded text class="text-primary" aria-label="Mudar para tema escuro"
-          @click="toggleTheme" v-tooltip.bottom="'Mudar para tema escuro'" />
       </div>
     </div>
   </div>
@@ -25,7 +21,7 @@
 import { computed } from 'vue';
 import { useModelStore } from '@/stores/model';
 import { useConversationStore } from '@/stores/conversation';
-import { isDarkTheme, toggleTheme } from '@/main';
+//import { isDarkTheme, toggleTheme } from '@/main';
 
 const modelStore = useModelStore();
 const conversationStore = useConversationStore();
