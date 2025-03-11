@@ -28,7 +28,7 @@ export default defineConfig({
     proxy: {
       // Proxy para o Ollama API
       '/api': {
-        target: 'http://localhost:11434',
+        target: 'http://192.168.1.8:11434',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
         configure: (proxy) => {
