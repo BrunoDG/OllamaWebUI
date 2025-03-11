@@ -34,10 +34,17 @@ const getModels = async () => {
     const data = await response.json();
 
     if (data.models && data.models.length > 0) {
-      const mostRecentModel = data.models.reduce((a: OllamaModel, b: OllamaModel) =>
-        (a.modified_at > b.modified_at ? a : b)
-      );
-      modelStore.setCurrentModel(mostRecentModel.name);
+      // Procurar pelo modelo deepseek-r1:latest
+      const deepseekModel = data.models.find((m: OllamaModel) => m.name === 'deepseek-r1:latest');
+      if (deepseekModel) {
+        modelStore.setCurrentModel(deepseekModel.name);
+      } else {
+        // Se não encontrar o deepseek, usar o modelo mais recente como fallback
+        const mostRecentModel = data.models.reduce((a: OllamaModel, b: OllamaModel) =>
+          (a.modified_at > b.modified_at ? a : b)
+        );
+        modelStore.setCurrentModel(mostRecentModel.name);
+      }
     }
 
     return data;
