@@ -19,9 +19,16 @@ function getApiUrl(): string {
   }
 
   // Em produção, use a URL configurada ou o padrão
-  const configuredUrl = (window as CustomWindow).OLLAMA_API_URL
-  console.log('URL da API em produção:', configuredUrl || 'http://localhost:11434')
-  return configuredUrl || 'http://localhost:11434'
+  let configuredUrl = (window as CustomWindow).OLLAMA_API_URL || 'http://localhost:11434'
+
+  // Garantir que estamos usando HTTP, não HTTPS
+  if (configuredUrl.startsWith('https://')) {
+    console.warn('URL configurada usa HTTPS. Mudando para HTTP.')
+    configuredUrl = configuredUrl.replace('https://', 'http://')
+  }
+
+  console.log('URL da API em produção:', configuredUrl)
+  return configuredUrl
 }
 
 // Configuração padrão

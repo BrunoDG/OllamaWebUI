@@ -21,6 +21,14 @@ export default defineConfig({
       name: 'configure-cors',
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
+          // Garantir que não esteja redirecionando para HTTPS
+          if (req.headers['x-forwarded-proto'] === 'https') {
+            console.log('Redirecionando de HTTPS para HTTP')
+            res.writeHead(301, { Location: `http://${req.headers.host}${req.url}` })
+            res.end()
+            return
+          }
+
           // Interceptar e tratar preflight requests (OPTIONS)
           if (req.method === 'OPTIONS') {
             console.log('Interceptando preflight request:', req.url)
@@ -54,6 +62,7 @@ export default defineConfig({
       '/api': {
         target: 'http://192.168.1.8:11434',
         changeOrigin: true,
+        secure: false, // Não verificar certificados SSL
         rewrite: (path) => {
           // Log para debug
           console.log(`Reescrevendo caminho: ${path} para ${path.replace(/^\/api/, '')}`)
@@ -64,6 +73,10 @@ export default defineConfig({
             console.error('Erro de proxy:', err)
           })
           proxy.on('proxyReq', (proxyReq, req) => {
+            // Garantir que a requisição use HTTP
+            if (proxyReq.protocol === 'https:') {
+              console.warn('Tentativa de usar HTTPS. Forçando HTTP.')
+            }
             console.log(`Enviando requisição: ${req.method} ${req.url} -> ${proxyReq.path}`)
           })
           proxy.on('proxyRes', (proxyRes, req, res) => {
