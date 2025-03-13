@@ -13,10 +13,15 @@ interface CustomWindow extends Window {
 function getApiUrl(): string {
   // Em desenvolvimento, use o proxy do Vite
   if (import.meta.env.DEV) {
+    // Usar sempre o proxy em desenvolvimento, mesmo para acessos externos
+    console.log('Usando proxy do Vite para a API')
     return '/api'
   }
+
   // Em produção, use a URL configurada ou o padrão
-  return (window as CustomWindow).OLLAMA_API_URL || 'http://localhost:11434'
+  const configuredUrl = (window as CustomWindow).OLLAMA_API_URL
+  console.log('URL da API em produção:', configuredUrl || 'http://localhost:11434')
+  return configuredUrl || 'http://localhost:11434'
 }
 
 // Configuração padrão

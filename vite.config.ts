@@ -37,6 +37,13 @@ export default defineConfig({
           proxy.on('proxyReq', (proxyReq, req) => {
             console.log('Proxy request:', req.method, req.url)
           })
+          proxy.on('proxyRes', (proxyRes, _req, res) => {
+            // Modificar os headers para permitir o acesso do IP específico
+            res.setHeader('Access-Control-Allow-Origin', 'http://192.168.1.10:5173')
+            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+            res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, User-Agent')
+            res.setHeader('Access-Control-Max-Age', '86400')
+          })
         },
       },
     },
