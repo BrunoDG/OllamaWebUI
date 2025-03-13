@@ -24,27 +24,18 @@ export default defineConfig({
   },
   server: {
     host: true,
-    cors: {
-      origin: '*',
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type'],
-    },
+    cors: true,
     proxy: {
       '/api': {
         target: 'http://192.168.1.8:11434',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
-        configure: (proxy, options) => {
-          proxy.on('error', (err, req, res) => {
+        configure: (proxy) => {
+          proxy.on('error', (err) => {
             console.log('Proxy error:', err)
           })
-          proxy.on('proxyReq', (proxyReq, req, res) => {
+          proxy.on('proxyReq', (proxyReq, req) => {
             console.log('Proxy request:', req.method, req.url)
-          })
-          proxy.on('proxyRes', (proxyRes, req, res) => {
-            res.setHeader('Access-Control-Allow-Origin', '*')
-            res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-            res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
           })
         },
       },

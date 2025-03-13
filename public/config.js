@@ -1,2 +1,2 @@
 // Configuração do Bolter
-window.OLLAMA_API_URL = 'http://localhost:11434'
+window.OLLAMA_API_URL = 'http://192.168.1.8:11434'
