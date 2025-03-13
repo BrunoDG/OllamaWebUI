@@ -6,26 +6,6 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import tailwindcss from '@tailwindcss/vite'
 import Components from 'unplugin-vue-components/vite'
 import { PrimeVueResolver } from 'unplugin-vue-components/resolvers'
-import type { Connect } from 'vite'
-
-// Middleware para lidar com solicitações CORS para Firefox
-const corsMiddleware: Connect.NextHandleFunction = (req, res, next) => {
-  // Para requisições OPTIONS (preflight) retornar 204 imediatamente
-  if (req.method === 'OPTIONS') {
-    res.writeHead(204, {
-      'Access-Control-Allow-Origin': 'http://192.168.1.10:5173',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers':
-        'Content-Type, Authorization, User-Agent, Accept, Origin, X-Requested-With',
-      'Access-Control-Allow-Credentials': 'true',
-      'Access-Control-Max-Age': '86400',
-      Vary: 'Origin, Access-Control-Request-Method, Access-Control-Request-Headers',
-    })
-    res.end()
-    return
-  }
-  next()
-}
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -36,11 +16,29 @@ export default defineConfig({
     Components({
       resolvers: [PrimeVueResolver()],
     }),
-    // Plugin para adicionar o middleware CORS
+    // Plugin para tratar CORS
     {
-      name: 'cors-for-firefox',
+      name: 'configure-cors',
       configureServer(server) {
-        server.middlewares.use(corsMiddleware)
+        server.middlewares.use((req, res, next) => {
+          // Interceptar e tratar preflight requests (OPTIONS)
+          if (req.method === 'OPTIONS') {
+            console.log('Interceptando preflight request:', req.url)
+
+            res.writeHead(204, {
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+              'Access-Control-Allow-Headers':
+                'Content-Type, Authorization, User-Agent, Accept, Origin, X-Requested-With',
+              'Access-Control-Allow-Credentials': 'true',
+              'Access-Control-Max-Age': '86400',
+              Vary: 'Origin, Access-Control-Request-Method, Access-Control-Request-Headers',
+            })
+            res.end()
+            return
+          }
+          next()
+        })
       },
     },
   ],
@@ -56,17 +54,23 @@ export default defineConfig({
       '/api': {
         target: 'http://192.168.1.8:11434',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        rewrite: (path) => {
+          // Log para debug
+          console.log(`Reescrevendo caminho: ${path} para ${path.replace(/^\/api/, '')}`)
+          return path.replace(/^\/api/, '')
+        },
         configure: (proxy) => {
           proxy.on('error', (err) => {
-            console.log('Proxy error:', err)
+            console.error('Erro de proxy:', err)
           })
           proxy.on('proxyReq', (proxyReq, req) => {
-            console.log('Proxy request:', req.method, req.url)
+            console.log(`Enviando requisição: ${req.method} ${req.url} -> ${proxyReq.path}`)
           })
-          proxy.on('proxyRes', (proxyRes, _req, res) => {
-            // Modificar os headers para permitir o acesso do IP específico
-            res.setHeader('Access-Control-Allow-Origin', 'http://192.168.1.10:5173')
+          proxy.on('proxyRes', (proxyRes, req, res) => {
+            console.log(`Resposta recebida: ${proxyRes.statusCode} para ${req.url}`)
+
+            // Garantir que todos os headers CORS estejam presentes
+            res.setHeader('Access-Control-Allow-Origin', '*')
             res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
             res.setHeader(
               'Access-Control-Allow-Headers',
@@ -74,7 +78,6 @@ export default defineConfig({
             )
             res.setHeader('Access-Control-Allow-Credentials', 'true')
             res.setHeader('Access-Control-Max-Age', '86400')
-            // Adicionar o cabeçalho Vary para caching correto
             res.setHeader('Vary', 'Origin')
           })
         },
