@@ -45,7 +45,7 @@ ${cleanMessages.map((m) => `${m.role}: ${m.content}`).join('\n')}
 
 Responda APENAS com o título, sem explicações adicionais.`
 
-      const response = await fetch(`${config.ollamaBaseUrl}/api/generate`, {
+      const response = await fetch(`${config.ollamaBaseUrl}/generate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -14,8 +14,8 @@ function getApiUrl(): string {
   // Em desenvolvimento, sempre use o proxy local
   if (import.meta.env.DEV) {
     console.log('Usando proxy local para a API')
-    // Usar o caminho relativo para garantir que as requisições passem pelo proxy do Vite
-    return window.location.origin + '/api'
+    // Usar APENAS o caminho relativo, sem origem
+    return '/api'
   }
 
   // Em produção, use a URL configurada ou o padrão

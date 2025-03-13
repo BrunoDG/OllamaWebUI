@@ -77,7 +77,9 @@ const createNewConversation = () => {
 const scrollToBottom = () => {
   if (chatAreaRef.value) {
     setTimeout(() => {
-      chatAreaRef.value.scrollTop = chatAreaRef.value.scrollHeight;
+      if (chatAreaRef.value) {
+        chatAreaRef.value.scrollTop = chatAreaRef.value.scrollHeight;
+      }
     }, 50);
   }
 };
@@ -103,15 +105,15 @@ const submitChat = async () => {
   scrollToBottom();
 
   try {
-    // Usar a URL configurada para a API Ollama
-    const response = await fetch(`${config.ollamaBaseUrl}/api/chat`, {
+    // Enviar mensagem para o modelo
+    const response = await fetch(`${config.ollamaBaseUrl}/chat`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         model: currentModel.value,
-        messages: [inputMsg],
+        messages: currentConversation.value.messages,
         stream: true,
       }),
     });

@@ -26,7 +26,7 @@ const { currentModel } = toRefs(modelStore);
 
 const getModels = async () => {
   try {
-    const response = await fetch(`${config.ollamaBaseUrl}/api/tags`);
+    const response = await fetch(`${config.ollamaBaseUrl}/tags`);
     if (!response.ok) {
       throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
     }
@@ -71,7 +71,7 @@ const pullModelWithProgress = async (model: string) => {
   loadingModelName.value = model;
 
   try {
-    const response = await fetch(`${config.ollamaBaseUrl}/api/pull`, {
+    const response = await fetch(`${config.ollamaBaseUrl}/pull`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
