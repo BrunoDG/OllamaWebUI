@@ -24,10 +24,14 @@ export default defineConfig({
   },
   server: {
     host: true,
-    cors: true,
+    cors: {
+      origin: '*',
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type'],
+    },
     proxy: {
       '/api': {
-        target: 'http://0.0.0.0:11434',
+        target: 'http://192.168.1.8:11434',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
         configure: (proxy, options) => {
