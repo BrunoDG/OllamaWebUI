@@ -11,11 +11,11 @@ interface CustomWindow extends Window {
 
 // Obter a URL da API do arquivo de configuração global
 function getApiUrl(): string {
-  // Em desenvolvimento, use o proxy do Vite
+  // Em desenvolvimento, sempre use o proxy local
   if (import.meta.env.DEV) {
-    // Usar sempre o proxy em desenvolvimento, mesmo para acessos externos
-    console.log('Usando proxy do Vite para a API')
-    return '/api'
+    console.log('Usando proxy local para a API')
+    // Usar o caminho relativo para garantir que as requisições passem pelo proxy do Vite
+    return window.location.origin + '/api'
   }
 
   // Em produção, use a URL configurada ou o padrão
